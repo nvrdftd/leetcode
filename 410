@@ -1,0 +1,60 @@
+// Split Array Largest Sum
+#include <vector>
+
+class Solution {
+    public:
+        int splitArray(vector<int>& nums, int m)
+        {   
+            return splitAndSum(nums, 0, nums.size() - 1, m);
+        }
+    
+        int splitAndSum(std::vector<int> &nums, int from, int to, int m)
+        {   
+            int prevSum = 0;
+            bool hasPrev = false;
+            if (m > 1) {
+                // find the max index at which an array can be split
+                int maxIdx = findMaxIdx(to - from + 1, m);
+                for (int i = from; i <= from + maxIdx; ++i) {
+                
+                    int sum1 = arraySum(nums, from, i);
+                    int sum2 = splitAndSum(nums, i + 1, to, m - 1);
+                    
+                    // Find the largest num in one way, a combination of subarrays
+                    int pendingSum = 0;
+                    if (sum1 > sum2) {
+                        pendingSum = sum1;
+                    } else {
+                        pendingSum = sum2;
+                    }
+                    
+                    // Find the minimum num among multiple ways of splitting the original array
+                    if (!hasPrev) {
+                        prevSum = pendingSum;
+                        hasPrev = true;
+                    } else {
+                        if (prevSum > pendingSum) prevSum = pendingSum;
+                    }
+                }
+                
+            } else if (m == 1) {
+                int sum = arraySum(nums, from, to);
+                prevSum = sum;
+            }
+            return prevSum;
+        }
+
+        int arraySum(vector<int> &nums, int from, int to)
+        {   
+            int sum = 0;
+            for (int i = from; i <= to; ++i) {
+                sum += nums[i];
+            }
+            return sum;
+        }
+        
+        int findMaxIdx(int n, int m)
+        {
+            return n - m;
+        }
+};
