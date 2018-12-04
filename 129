@@ -9,7 +9,7 @@ class Solution {
         int preorderTraverse(TreeNode* root, int prevSum)
         {   
             int afterSum = 0;
-            # return the total summation if no children; otherwise, continue until a leaf node
+            // return the total summation if no children; otherwise, continue until a leaf node
             if (root->left == nullptr && root->right == nullptr) return prevSum;
             if (root->left != nullptr) {
                 afterSum = afterSum + preorderTraverse(root->left, prevSum * 10 + root->left->val);
