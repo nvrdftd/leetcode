@@ -1,0 +1,22 @@
+# Sum Root to Leaf Numbers
+class Solution {
+    public:
+        int sumNumbers(TreeNode* root) {
+            if (root == nullptr) return 0;
+            return preorderTraverse(root, root->val);
+        }
+        
+        int preorderTraverse(TreeNode* root, int prevSum)
+        {   
+            int afterSum = 0;
+            # return the total summation if no children; otherwise, continue until a leaf node
+            if (root->left == nullptr && root->right == nullptr) return prevSum;
+            if (root->left != nullptr) {
+                afterSum = afterSum + preorderTraverse(root->left, prevSum * 10 + root->left->val);
+            }
+            if (root->right != nullptr) {
+                afterSum = afterSum + preorderTraverse(root->right, prevSum * 10 + root->right->val);
+            }
+            return afterSum;
+        }
+};
