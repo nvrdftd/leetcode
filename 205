@@ -1,0 +1,45 @@
+// Isomorphic
+
+#include <unordered_map>
+#include <string>
+
+class Solution {
+    public:
+        bool isIsomorphic(string s, string t)
+        {   
+            if (initCharMap(s, t)) return compareStr(s, t);
+            return false;
+        }
+    
+        bool initCharMap(const std::string &origin, const std::string &replaced)
+        {
+             for (int i = 0; i < origin.length(); ++i) {
+                // Check first if a key in the map, and then insert the key and its value
+                if (_charMap.count(origin.at(i)) != 1) {
+                    if (_charUsed.count(replaced.at(i)) != 1) {
+                        _charUsed.insert(replaced.at(i));
+                        _charMap.insert(std::make_pair(origin.at(i), replaced.at(i)));
+                    } else {
+                        return false;
+                    }
+                }
+             }
+            return true;
+        }
+        
+        bool compareStr(const std::string &origin, const std::string &replaced)
+        {
+           
+            for (int i = 0; i < origin.length(); ++i) {
+                # Check the existence in order
+                if (_charMap.at(origin.at(i)) != replaced.at(i)) {
+                    return false;
+                } 
+            }
+            return true;
+        }
+        
+    private:
+        std::unordered_set<char> _charUsed;
+        std::unordered_map<char, char> _charMap;
+};
