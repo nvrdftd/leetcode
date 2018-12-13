@@ -1,0 +1,111 @@
+#include <string>
+#include <unordered_map>
+#include <pair>
+#include <utility>
+
+class WordDictionary {
+    
+    struct Node {
+        char _c;
+        bool _isLast;
+        std::unordered_map<char, Node*> _charMap;
+        Node(char c): _c(c), _isLast(false) {}
+        void addChar(char c)
+        {   
+            Node *newNode = new Node(c);
+            _charMap.insert(std::make_pair(c, newNode));
+        }
+        Node *getNode(char c)
+        {
+            return _charMap.find(c)->second;
+        }
+        std::unordered_map<char, Node*> &getMap()
+        {
+            return _charMap;
+        }
+        bool hasChar(char c)
+        {
+            if (_charMap.count(c) == 1) return true;
+            return false;
+        }
+        bool hasChildren()
+        {
+            return !_charMap.empty();
+        }
+        bool isLastChar()
+        {
+            return _isLast;
+        }
+        void setLastChar()
+        {
+            _isLast = true;
+        }
+    };
+    
+    public:
+        /** Initialize your data structure here. */
+        WordDictionary()
+        {
+            trieRoot = new Node('.');
+        }
+    
+        /** Adds a word into the data structure. */
+        void addWord(const string &word) {
+            
+            Node *currentNode = trieRoot;
+            for (const char c: word) {
+                if (!currentNode->hasChar(c)) {
+                    currentNode->addChar(c);
+                }
+                currentNode = currentNode->getNode(c);
+            }
+            currentNode->setLastChar();
+        }
+    
+        /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+        bool search(const string &word) {
+            
+            if (word.size() == 0) return false;
+            
+            Node *currentNode = trieRoot;
+            
+            return checker(word, 0, currentNode);
+        }
+    
+        bool checker(const string &word, int i, Node *currentNode)
+        {   
+            if (i == word.size()) {
+                if (!currentNode->hasChildren() || currentNode->isLastChar()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            const char c = word.at(i);
+            if (c - '.' == 0) {
+                bool overall = false;
+                std::unordered_map<char, Node*> &charMap = currentNode->getMap();
+                for (auto iter = charMap.begin(); iter != charMap.end(); ++iter) {
+                    Node *nextNode = iter->second;
+                    overall = overall || checker(word, i + 1, nextNode);
+                }
+                return overall;
+            } else if (currentNode->hasChar(c)) {
+                currentNode = currentNode->getNode(c);
+                return checker(word, i + 1, currentNode);
+            } else {
+                return false;
+            }
+        }
+    
+    // Assume there exists the deallocation of memory that is used in this class. 
+    private:
+        Node *trieRoot;
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary obj = new WordDictionary();
+ * obj.addWord(word);
+ * bool param_2 = obj.search(word);
+ */
