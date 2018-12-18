@@ -1,0 +1,10 @@
+class Solution {
+public:
+    bool escapeGhosts(vector<vector<int>>& ghosts, vector<int>& target) {
+        int fixedTerm = abs(target[0]) + abs(target[1]);
+        for (const auto ghost: ghosts) {
+            if (fixedTerm >= (abs(target[0] - ghost[0]) + abs(target[1] - ghost[1]))) return false;
+        }
+        return true;
+    }
+};
