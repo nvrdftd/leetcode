@@ -1,0 +1,42 @@
+#include <unordered_set>
+
+class Solution {
+    public:
+        int uniqueMorseRepresentations(vector<string>& words)
+        {   
+            initMorseCode();
+            for (const string &word: words) {
+                string trans = wordTransform(word);
+                _diffTrans.insert(trans);
+            }
+            return _diffTrans.size();
+        }
+        
+        string wordTransform(const string &str)
+        {
+            string transformed;
+            for (const char c: str) {
+                transformed.append(_morseCodes[c - 'a']);
+            }
+            return transformed;
+        }
+    
+        void initMorseCode()
+        {
+            _morseCodes = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
+
+        }
+    
+    private:
+        std::unordered_set<string> _diffTrans;
+        std::vector<string> _morseCodes;
+};
+
+
+/*
+    == Naive approach ==
+    1) Transform each word in Morse Code
+    2) Store each distinct transformation and count the number of these distinct transformations in a set while iterating each of these transformation
+    3) Output the result
+    
+*/
