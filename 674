@@ -1,0 +1,26 @@
+class Solution {
+    public:
+        int findLengthOfLCIS(vector<int> &nums)
+        {   
+            if (nums.empty()) return 0;
+            int prevLength = 1;
+            int currLength = 1;
+            for (int i = 0; i < nums.size() - 1; ++i) {
+                if (nums.at(i + 1) > nums.at(i)) {
+                    ++currLength;   
+                } else {
+                    currLength = 1;
+                }
+                if (currLength > prevLength) prevLength = currLength;
+            }
+            return prevLength;
+        }
+};
+
+
+/*
+*   Possible approach:
+*       1. From the first index, check if the next integer is greater than the current one.
+*       2. If yes, increment the counter by 1 and do the same at the next index.
+*       3. If no, compare the new length of the subsequence with the last one and start from the next index to *          examine the other lengths
+*/
