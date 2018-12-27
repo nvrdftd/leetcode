@@ -1,0 +1,40 @@
+class Solution {
+    public:
+        bool rotateString(string A, string B)
+        {
+            if (A.size() != B.size()) return false;
+            if (A.empty()) return true;
+            std::unordered_set<int> numShifts = findNumShifts(A, B);
+            for (int num: numShifts) {
+                int i = 0;
+                while (i < A.size()) {
+                    if (A.at(i) != B.at((i + num) % A.size())) break;
+                    ++i;
+                }
+                
+                if (i == A.size()) return true;
+            }
+            return false;
+        }
+        
+        std::unordered_set<int> findNumShifts(const string &A, const string &B)
+        {   
+            std::unordered_set<int> shifts;
+            const char src = A.at(0);
+            int i = 0;
+            for (const char tgt: B) {
+                if (src == tgt) shifts.insert(i);
+                ++i;
+            }
+            return shifts;
+        }
+        
+};
+
+
+/*  
+*   Possible solution:
+*       1. Find the number of shifts given the postion of one of the characters.
+*       2. Compare the position of each character in A with that in B.
+*
+*/
