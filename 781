@@ -1,0 +1,46 @@
+#include <algorithm>
+
+class Solution {
+    public:
+        int numRabbits(vector<int>& answers)
+        {   
+            if (answers.empty()) return 0;
+            std::sort(answers.begin(), answers.end());
+            int tempCt = answers.at(0) + 1;
+            int sameCt = 0;
+            int prevAnswer = -1;
+            int totalCt = 0;
+            for (int answer: answers) {
+                if (answer == 0) {
+                    ++totalCt;
+                } else {
+                    if (prevAnswer == answer && sameCt >= 1) {
+                        ++sameCt;
+                        if (sameCt == tempCt) {
+                            totalCt += tempCt;
+                            tempCt = 0;
+                            sameCt = 0;
+                        }   
+                    } else {
+                        if (sameCt > 0) totalCt += tempCt;
+                        sameCt = 1;
+                        tempCt = answer + 1;
+                    }
+                }
+                prevAnswer = answer;
+            }
+            if (sameCt > 0) totalCt += tempCt;
+            return totalCt;
+        }
+};
+
+
+/*
+*   Possible solution:
+*       1. If the array is empty, then the min is zero.
+*       2. If the answers are the same number, then the min number of rabbits will be that number plus one.
+*       3. The main problem may be to deal with the same number when iterating over the answers.
+*       4. Sort the array.
+*       5. If the number is zero, then add one to the total count.
+*       6. If the number of the same color is equal to the current count, then add it to the total count.
+*/
