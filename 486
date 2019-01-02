@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool PredictTheWinner(vector<int>& nums)
+    {
+        int lIdx = 0;
+        int rIdx = nums.size() - 1;
+        int player = 1;
+        return predict(nums, lIdx, rIdx, player) < 0 ? false : true;
+    }
+    
+    int predict(vector<int> &nums, int lIdx, int rIdx, int player)
+    {
+        if (lIdx == rIdx) {
+            return player * nums.at(lIdx);
+        }
+        
+        int LTotal = player * nums.at(lIdx) + predict(nums, lIdx + 1, rIdx, -player);
+        int RTotal = player * nums.at(rIdx) + predict(nums, lIdx, rIdx - 1, -player);
+
+        return player * max(player * LTotal, player * RTotal);
+    }
+};
