@@ -1,0 +1,20 @@
+class Solution {
+    public:
+        int singleNumber(vector<int>& nums)
+        {
+            int realSum = 0;
+            int distinctSum = 0;
+            
+            for (int num: nums) {
+                _numSet.insert(num);
+                realSum += num;
+            }
+            
+            for (int num: _numSet) {
+                distinctSum += num;
+            }
+            return 2 * distinctSum - realSum;
+        }
+    private:
+        unordered_set<int> _numSet;
+};
