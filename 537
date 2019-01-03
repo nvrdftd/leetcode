@@ -1,0 +1,48 @@
+class Solution {
+public:
+    string complexNumberMultiply(string a, string b) {
+        
+        vector<int> first = extractNums(a);
+        vector<int> second = extractNums(b);
+        
+        string output;
+        output.append(to_string(first[0] * second[0] - first[1] * second[1]));
+        output.append("+");
+        output.append(to_string(first[0] * second[1] + first[1] * second[0]));
+        output.append("i");
+        
+        return output;
+    }
+    
+    vector<int> extractNums(string str)
+    {
+        vector<int> nums;
+        bool isNegative = false;
+        int num = 0;
+        int i = 0;
+        int j = 0;
+        while (j < str.size()) {
+            if (str.at(j) == '-') {
+                isNegative = true;
+                ++i;
+                ++j;
+                continue;
+            }
+            if (str.at(j) == '+') {
+                num = stoi(str.substr(i, j - i));
+                i = j + 1;
+            } else if (str.at(j) == 'i') {
+                num = stoi(str.substr(i, j - i));
+            }
+            if ((str.at(j) == '+' || str.at(j) == 'i') && isNegative) {
+                num = -num;
+                nums.push_back(num);
+                isNegative = false;
+            } else if (str.at(j) == '+' || str.at(j) == 'i') {
+                nums.push_back(num);
+            }
+            ++j;
+        }
+        return nums;
+    }
+};
