@@ -1,0 +1,26 @@
+class Solution {
+    public:
+        bool checkValidString(string s) {
+            int LB = 0;
+            int UB = 0;
+            for (const char c: s) {
+                if (c == '(') {
+                    LB += 1;
+                } else {
+                    LB -= 1;
+                }
+                
+                if (c == ')') {
+                    UB -= 1;
+                } else {
+                    UB += 1;
+                }
+                
+                if (UB < 0) break;
+                if (LB < 0) LB = 0;
+
+            }
+
+            return LB == 0;
+        }
+};
