@@ -1,0 +1,27 @@
+class Solution {
+    public:
+        void moveZeroes(vector<int> &nums)
+        {   
+            int shiftCt = 0;
+            for (int i = 0; i < nums.size(); ++i) {
+                if (nums[i] == 0) {
+                    if ((i < nums.size() - 1) && nums[i + 1] != 0) {
+                        int tmp = nums[i + 1];
+                        nums[i + 1] = nums[i - shiftCt];
+                        nums[i - shiftCt] = tmp;
+                    } else {
+                        ++shiftCt;
+                    }
+                }
+            }
+        }
+};
+
+/*
+*   Possible solution:
+*       1. Each time we encounter a zero, we swap it with the next number if and only if
+*          that number is not zero itself. Otherwise, increment Count by 1.
+*       2. Whenever we bump into a non-zero number and have a non-zero Count,
+*          then we shift that number backwards by that Count.
+*       3. We do the above until the end of the array.
+*/
