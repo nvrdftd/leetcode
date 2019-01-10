@@ -1,0 +1,21 @@
+class Solution {
+  public:
+      int minAddToMakeValid(string S)
+      {
+          int leftParenCt = 0;
+          int min = 0;
+          for (const char c: S) {
+              if (c == '(') {
+                  ++leftParenCt;
+              } else if (c == ')') {
+                  if (leftParenCt == 0) {
+                      ++min;
+                  } else {
+                      --leftParenCt;
+                  }
+              }
+          }
+          if (left > 0) min += leftParenCt;
+          return min;
+      }
+};
