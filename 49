@@ -1,0 +1,30 @@
+class Solution {
+    public:
+        vector<vector<string> > groupAnagrams(vector<string> &strs) {
+            for (const string str: strs) {
+                string reStr(str);
+                sort(reStr.begin(), reStr.end());
+                auto strIter = _strMap.find(reStr);
+                if (strIter != _strMap.end()) {
+                    strIter->second.push_back(str);
+                } else {
+                    vector<string> strVec;
+                    strVec.push_back(str);
+                    _strMap.insert(make_pair(reStr, strVec));
+                }
+            }
+            return generateGroups();
+        }
+    
+        vector<vector<string> > generateGroups()
+        {   
+            vector<vector<string> > strGroups;
+            for (auto mapIter = _strMap.begin(); mapIter != _strMap.end(); ++mapIter) {
+                strGroups.push_back(mapIter->second);
+            }
+            return strGroups;
+        }
+    
+    private:
+        std::unordered_map<string, vector<string> > _strMap;
+};
