@@ -1,0 +1,23 @@
+class Solution {
+    public:
+        int uniquePaths(int m, int n) {
+            for (int i = 0; i < n; ++i) {
+                vector<int> nums(m, 0);
+                _memo.push_back(nums);
+            }
+            return move(0, 0, m, n);
+        }
+        
+        int move(int x, int y, int m, int n)
+        {   
+            if (x >= m || y >= n) return 0;
+            int numPaths = _memo[y][x];
+            if (numPaths != 0) return numPaths;
+            if (x == m - 1 && y == n - 1) return 1;
+            numPaths = move(x + 1, y, m, n) + move(x, y + 1, m, n);
+            _memo[y][x] = numPaths;
+            return numPaths;
+        }
+    private:
+        vector<vector<int> > _memo;
+};
