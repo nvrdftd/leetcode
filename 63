@@ -1,0 +1,30 @@
+class Solution {
+    public:
+        int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid)
+        {
+            for (int i = 0; i < obstacleGrid.size(); ++i) {
+                vector<int> cols(obstacleGrid[i].size(), -1);
+                _memo.push_back(cols);
+            }
+            
+            return move(obstacleGrid, 0, 0);
+        }
+    
+        int move(vector<vector<int> > &obstacleGrid, int row, int col)
+        {   
+            if (row >= obstacleGrid.size() || col >= obstacleGrid[row].size()) return 0;
+            int numPaths = _memo[row][col];
+            if (numPaths != -1) return numPaths;
+            if (row == obstacleGrid.size() - 1 && col == obstacleGrid[row].size() - 1 && obstacleGrid[row][col] == 0) return 1;
+            if (obstacleGrid[row][col] == 0) {
+                numPaths = move(obstacleGrid, row + 1, col) + move(obstacleGrid, row, col + 1);
+                _memo[row][col] = numPaths;
+                return numPaths; 
+            } else {
+                _memo[row][col] = 0;   
+                return 0;
+            }
+        }
+    private:
+        vector<vector<int> > _memo;
+};
