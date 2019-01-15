@@ -1,0 +1,25 @@
+class Solution {
+    public:
+        int minPathSum(vector<vector<int> > &grid)
+        {
+            for (int i = 0; i < grid.size(); ++i) {
+                vector<int> nums(grid[i].size(), -1);
+                _memo.push_back(nums);
+            }
+            
+            return move(grid, 0, 0);
+        }
+    
+        int move(vector<vector<int> > &grid, int row, int col)
+        {   
+            if (row >= grid.size() || col >= grid[row].size()) return 1000000;
+            if (_memo[row][col] != -1) return _memo[row][col];
+            if (row == grid.size() - 1 && col == grid[row].size() - 1) return grid[row][col];
+            int sum = grid[row][col] + min(move(grid, row + 1, col), move(grid, row, col + 1));     
+            _memo[row][col] = sum;
+            return sum;
+        }
+    private:
+        vector<vector<int> > _memo;
+    
+};
