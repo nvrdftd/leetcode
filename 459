@@ -1,0 +1,27 @@
+class Solution {
+    public:
+        bool repeatedSubstringPattern(string s)
+        {   
+            if (s.size() <= 1) return false;
+            string subStr = s.substr(0, 1);
+            string pendingStr;
+            bool check = false;
+            int i = 1;
+            int j = 0;
+            while (i < s.size()) {
+                if (j == subStr.size()) j = 0;
+                if (s.at(i) != subStr.at(j)) {
+                    subStr = s.substr(0, subStr.size() + 1);
+                    j = 0;
+                    i = subStr.size() - 1;
+                    check = false;
+                } else {
+                    check = true;
+                    ++j;
+                }
+                ++i;
+            }
+            if (j != subStr.size()) return false;
+            return check;
+        }
+};
