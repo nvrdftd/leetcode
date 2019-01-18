@@ -1,0 +1,51 @@
+#define NOVAL -10000000
+
+class Solution {
+    public:
+        int calculateMinimumHP(vector<vector<int> > &dungeon)
+        {
+            initMemo(dungeon.size(), dungeon.at(0).size());
+            return requiredHP(dungeon, 0, 0);
+        }
+    
+        int requiredHP(vector<vector<int> > &grid, int row, int col)
+        {   
+            if (row >= grid.size() || col >= grid.at(row).size()) return -1;
+            
+            if (_memo[row][col] != NOVAL) return _memo[row][col];
+            
+            int leastHP = (grid[row][col] > 0) ? 1 : (1 - grid[row][col]);
+            
+            if (row == (grid.size() - 1) && col == (grid.at(row).size() - 1)) return leastHP;
+            
+            
+            
+            int downHP = requiredHP(grid, row + 1, col);
+            int rightHP = requiredHP(grid, row, col + 1);
+            int rightPendingHP = (grid[row][col] < rightHP) ? (rightHP - grid[row][col]) : 0;
+            int downPendingHP = (grid[row][col] < downHP) ? (downHP - grid[row][col]) : 0;
+            int pendingHP = 0;
+            if (downHP >= 0 && rightHP >= 0) {
+                pendingHP = min(rightPendingHP, downPendingHP);
+            } else if (downHP < 0) {
+                pendingHP = rightPendingHP;
+            } else {
+                pendingHP = downPendingHP;
+            }
+
+            int neededHP = max(leastHP, pendingHP);
+            // cout << "row: " << row << ", col: " << col << ", " << neededHP << endl;
+            _memo[row][col] = neededHP;
+            return neededHP;
+        }
+        
+        void initMemo(int rowNum, int colNum)
+        {
+            for (int row = 0; row < rowNum; ++row) {
+                vector<int> newRow(colNum, NOVAL);
+                _memo.push_back(newRow);
+            }
+        }
+    private:
+        vector<vector<int> > _memo;
+};
