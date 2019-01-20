@@ -1,0 +1,60 @@
+class Solution {
+    public:
+        string longestPalindrome(string s)
+        {   
+            int len = s.size();
+            init(len, len);        
+            for (int windowSize = 1; windowSize <= len; ++windowSize) {
+                for (int i = 0; i <= len - windowSize; ++i) {
+                    findMax(s, i, i + windowSize - 1);
+                }
+            }
+            return s.substr(leftPos, maxLen);
+        }
+        
+        void init(int nRow, int nCol)
+        {   
+            maxLen = 0;
+            leftPos = 0;
+            rightPos = 0;
+            for (int i = 0; i < nRow; ++i) {
+                vector<int> nums(nCol, -1);
+                _memo.push_back(nums);
+            }
+        }
+        
+        void findMax(string &s, int left, int right)
+        {
+            if (left == right) {
+                _memo[left][right] = 1;
+                maxLen = 1;
+                leftPos = left;
+                rightPos = right;
+            } else {
+                int pendingLeft = left + 1;
+                int pendingRight = right - 1;
+                if (s[left] == s[right]) {
+                    int pendingLen = -1;
+                    if (pendingLeft <= pendingRight) {
+                        if (_memo[pendingLeft][pendingRight] != -1) {
+                            pendingLen = _memo[pendingLeft][pendingRight] + 2;
+                        }
+                    } else {
+                        pendingLen = 2;
+                    }
+                    _memo[left][right] = pendingLen;
+                    if (pendingLen > maxLen) {
+                        maxLen = pendingLen;
+                        leftPos = left;
+                        rightPos = right;
+                    }
+                }
+            }
+        }
+        
+    private:
+        vector<vector<int> > _memo;
+        int maxLen;
+        int leftPos;
+        int rightPos;
+};
