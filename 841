@@ -1,0 +1,29 @@
+class Solution {
+    public:
+        bool canVisitAllRooms(vector<vector<int> > &rooms)
+        {   
+            init(rooms);
+            return visit(rooms, 0);
+        }
+        void init(vector<vector<int> > &rooms)
+        {
+            for (int i = 0; i < rooms.size(); ++i) {
+                nvisited.insert(i);
+            }
+        }
+        bool visit(vector<vector<int> > &rooms, int key)
+        {   
+            nvisited.erase(key);
+            if (nvisited.empty()) return true;
+            bool result = false;
+            for (int k: rooms[key]) {
+                if (nvisited.empty()) break;
+                if (nvisited.find(k) != nvisited.end()) {
+                    result = result || visit(rooms, k);
+                }
+            }
+            return result || nvisited.empty();
+        }
+    private:
+        unordered_set<int> nvisited;
+};
