@@ -1,0 +1,39 @@
+class Solution {
+    public:
+        int integerBreak(int n)
+        {   
+            init(n);
+            return maxProduct(n);
+        }
+    
+        void init(int n)
+        {   
+            for (int i = 0; i <= n; ++i) {
+                m_memo.push_back(0);
+            }
+        }
+    
+        int maxProduct(int num)
+        {   
+            if (num == 1) return 1;
+            int max = m_memo[num];
+            if (max != 0) return max;
+            int pendingMax = 0;
+            int product = 0;
+            int j = 0;
+            for (int i = 1; i <= num / 2; ++i) {
+                j = num - i;
+                product = maxProduct(j);
+                pendingMax = i * (product > j ? product : j);
+                if (pendingMax > max) max = pendingMax;
+            }
+            m_memo[num] = max;
+            return max;
+        }
+    private:
+        vector<int> m_memo;
+};
+
+/*
+*   Note that zero is not a positive integer.
+*/
