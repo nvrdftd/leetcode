@@ -1,0 +1,59 @@
+class Solution {
+    public:
+        int maxProfit(vector<int> &prices)
+        {
+            if (prices.size() <= 1) return 0;
+            init(prices.size());
+            int max = 0;
+            int pendingMax = 0;
+            for (int i = 0; i < prices.size(); ++i) {
+                pendingMax = transact(prices, -prices[i], i, true);
+                if (pendingMax > max) max = pendingMax;
+            }
+            return max;
+        }
+        void init(int n)
+        {   
+            for (int i = 0; i < n; ++i) {
+                m_sellProfits.push_back(0);
+                m_buyProfits.push_back(0);
+            }
+        }
+        int transact(vector<int> &prices, int currProfit, int currDay, bool bought)
+        {   
+            if (m_buyProfits[currDay] != 0 && bought) return currProfit + m_buyProfits[currDay];
+            
+            if (m_sellProfits[currDay] != 0 && !bought) return currProfit + m_sellProfits[currDay];
+            
+            if (currDay >= prices.size() - 1) return currProfit;
+            
+            int newProfit = 0;
+            int pendingProfit = 0;
+            if (bought) {
+                for (int i = currDay + 1; i < prices.size(); ++i) {
+                    pendingProfit = transact(prices, prices[i], i, !bought);
+                        
+                    if (newProfit < pendingProfit) newProfit = pendingProfit;
+                }
+                m_buyProfits[currDay] = newProfit;
+            } else {
+                for (int i = currDay + 2; i < prices.size(); ++i) {
+                    pendingProfit = transact(prices, -prices[i], i, !bought);
+                    if (newProfit < pendingProfit) newProfit = pendingProfit;
+                }
+                m_sellProfits[currDay] = newProfit;
+            }
+            return currProfit + newProfit;
+        }
+    private:
+        vector<int> m_buyProfits;
+        vector<int> m_sellProfits;
+};
+
+/*
+*   Possible solution:
+*       1. On the first day, we need to "Buy" in order to "Sell" stock shares.
+*       2. We may skip one day or more to maximize the profit.
+*       
+*
+*/
