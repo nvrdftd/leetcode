@@ -1,0 +1,18 @@
+class Solution {
+    public:
+        int numMatchingSubseq(string S, vector<string> &words)
+        {   
+            int count = 0;
+            for (const string &word: words) {
+                int i = 0;
+                int j = 0;
+                while (i < word.size() && j < S.size()) {
+                    if (word[i] == S[j]) ++i;
+                    ++j;
+                }
+                if (i == word.size()) ++count;
+            }
+            
+            return count;
+        }
+};
