@@ -1,0 +1,29 @@
+class Solution {
+    public:
+        int search(vector<int> &nums, int target)
+        {   
+            if (nums.size() == 0) return -1;
+            int breakPt = findBreakPt(nums);
+            int i = 0;
+            int j = i + breakPt;
+            while (i < breakPt) {
+                if (nums[i] == target) return i;
+                ++i;
+            }
+            while (j < nums.size()) {
+                if (nums[j] == target) return j;
+                ++j;
+            }
+            return -1;
+        }
+        
+        int findBreakPt(vector<int> &nums)
+        {   
+            int i = 0;
+            while (i < nums.size() - 1) {
+                if (nums[i] > nums[i + 1]) return i + 1;
+                ++i;
+            }
+            return 0;
+        }
+};
