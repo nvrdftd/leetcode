@@ -1,0 +1,18 @@
+class Solution {
+    public:
+        int findMin(vector<int> &nums)
+        {
+            if (nums.size() == 0) return -1;
+            int breakPt = findBreakPt(nums);
+            return nums[0] < nums[breakPt] ? nums[0] : nums[breakPt];
+        }
+        int findBreakPt(vector<int> &nums)
+        {   
+            int i = 0;
+            while (i < nums.size() - 1) {
+                if (nums[i] > nums[i + 1]) return i + 1;
+                ++i;
+            }
+            return 0;
+        }
+};
