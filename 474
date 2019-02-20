@@ -1,0 +1,38 @@
+class Solution {
+    public:
+        int findMaxForm(vector<string> &strs, int m, int n)
+        {   
+            init(strs, m, n);
+            for (auto &pair: m_zerosAndOnes) {
+                for (int i = m; i >= pair.first; --i) {
+                    for (int j = n; j >= pair.second; --j) {
+                        m_memo[i][j] = max(m_memo[i][j], m_memo[i - pair.first][j - pair.second] + 1);
+                    }
+                }
+            }
+            return m_memo[m][n];
+        }
+        void init(vector<string> &strs, int m, int n)
+        {   
+            for (int i = 0; i < m + 1; ++i) {
+                m_memo.push_back(vector<int> (n + 1, 0));    
+            }
+            
+            for (const string &str: strs) {
+                int zeroCt = 0;
+                int oneCt = 0;
+                for (const char &c: str) {
+                    if (c == '0') {
+                        ++zeroCt;
+                    } else {
+                        ++oneCt;
+                    }
+                }
+                m_zerosAndOnes.push_back(make_pair(zeroCt, oneCt));
+            }
+        }
+    
+    private:
+        vector<vector<int> > m_memo;
+        vector<pair<int, int> > m_zerosAndOnes;
+};
