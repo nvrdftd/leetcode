@@ -1,0 +1,15 @@
+class Solution {
+    public:
+        int reverse(int x) {
+            long int revInt = 0;
+            int num = x;
+            int tmp;
+            while (num != 0) {
+                revInt = (revInt * 10) + (num % 10);
+                tmp = revInt;
+                if (tmp != revInt) return 0;
+                num /= 10;
+            }
+            return revInt;
+        }
+};
