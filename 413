@@ -1,0 +1,28 @@
+class Solution {
+    public:
+        int numberOfArithmeticSlices(vector<int> &A)
+        {   
+            int currIdx = 2;
+            int n = A.size();
+            int currCt = 0;
+            int dice = 1;
+            int total = 0;
+            while (currIdx <= n - 1) {
+                int diff1 = A[currIdx] - A[currIdx - 1];
+                int diff2 = A[currIdx - 1] - A[currIdx - 2];
+                
+                if (diff1 == diff2) {
+                    currCt += dice;
+                    ++dice;
+                } else {
+                    total += currCt;
+                    currCt = 0;
+                    dice = 1;
+                }
+                ++currIdx;
+            }
+            
+            if (currCt > 0) total += currCt;
+            return total;
+        }
+};
