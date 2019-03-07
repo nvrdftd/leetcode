@@ -1,0 +1,18 @@
+class Solution {
+    public:
+        int longestPalindromeSubseq(string s) {
+            int strLen = s.size();
+            vector<vector<int> > memo(strLen, vector<int> (strLen, 0));
+            for (int i = strLen - 1; i >= 0; --i) {
+                memo[i][i] = 1;
+                for (int j = i + 1; j < strLen; ++j) {
+                    if (s[i] == s[j]) {
+                        memo[i][j] = memo[i + 1][j - 1] + 2;
+                    } else {
+                        memo[i][j] = max(memo[i + 1][j], memo[i][j - 1]);
+                    },
+                }
+            }
+            return memo[0][strLen - 1];
+        }
+};
