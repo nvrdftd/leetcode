@@ -1,0 +1,53 @@
+class Solution {
+    public:
+        vector<int> twoSum(vector<int>& nums, int target) {
+            
+            vector<int> twoNums;
+            
+            vector<int> oNums = nums;
+            
+            sort(nums.begin(), nums.end());
+            
+            int leftIdx = 0;
+            int rightIdx = nums.size() - 1;
+            
+            int x = 0;
+
+            while (1) {
+                x = target - nums[rightIdx];
+                if (x < nums[leftIdx]) {
+                    --rightIdx;
+                } else if (x > nums[leftIdx]) {
+                    ++leftIdx;
+                } else if (x == nums[leftIdx]) {
+                    break;
+                }
+            }
+            
+            for (int i = 0; i < oNums.size(); ++i) {
+                if ((oNums[i] == nums[leftIdx]) || (oNums[i] == nums[rightIdx])) {
+                    twoNums.push_back(i);
+                }
+                
+                if (twoNums.size() == 2) {
+                    break;
+                }
+            }
+            
+            return twoNums;
+        }
+};
+
+/* Apporach:
+*       1. Sort the array in an ascending order.
+*       2. Split the array according to the given target by finding the index
+*          at which the element is less than the target.
+*       3. Let X be the number when the target is subtracted the rightmost element in the split half.
+*       4. If X is less than the element at the left index,
+*          it means that the element it subtracted is too big.
+*          That is, move the right index to left one step.
+*       5. Similarly, if X is greater than the element at the left index,
+*          it means that the element it subtracted is too small.
+*          That is, move the left index to right one step.
+*       6. If X is the same as the element at the left index, break and output the indices.
+*/      
