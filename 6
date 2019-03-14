@@ -1,0 +1,25 @@
+class Solution {
+    public:
+        string convert(string s, int numRows) {
+            int sizeStr = s.size();
+            
+            if (sizeStr == 1 || numRows == 1) return s;
+            
+            string zigzag;
+            int shift = 2 * numRows - 2;
+            for (int i = 0; i < numRows; ++i) {
+                int j = i;
+                string tmp;
+                while (j < sizeStr) {
+                    tmp = s[j];
+                    zigzag.append(tmp);
+                    j += shift;
+                    if ((j - 2 * i < sizeStr) && (i > 0) && (i < numRows - 1)) {
+                        tmp = s[j - 2 * i];
+                        zigzag.append(tmp);
+                    }
+                }
+            }
+            return zigzag;
+        }
+};
