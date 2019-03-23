@@ -1,0 +1,21 @@
+class Solution {
+    public:
+        int subarraySum(vector<int>& nums, int k) {
+            int count = 0;
+            int sum = 0;
+            int n = nums.size();
+            unordered_map<int, int> sums{{0, 1}};
+            for (int num: nums) {
+                sum += num;
+                if (sums.count(sum - k) == 1) {
+                    count += sums[sum - k];
+                }
+                if (sums.count(sum) != 1) {
+                    sums.insert(make_pair(sum, 1));
+                } else {
+                    ++sums[sum];
+                }
+            }
+            return count;
+        }
+};
