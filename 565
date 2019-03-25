@@ -1,0 +1,19 @@
+class Solution {
+    public:
+        int arrayNesting(vector<int> &nums) {
+            int n = nums.size();
+            int maxLen = 0;
+            vector<bool> visited(n, false);
+            for (int i = 0; i < n; ++i) {
+                int nextIdx = i;
+                int len = 0;
+                while (!visited[nums[nextIdx]]) {
+                    ++len;
+                    visited[nums[nextIdx]] = true;
+                    nextIdx = nums[nextIdx];
+                }
+                maxLen = max(maxLen, len);
+            }
+            return maxLen;
+        }
+};
