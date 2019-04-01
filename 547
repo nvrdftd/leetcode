@@ -1,0 +1,39 @@
+class Solution {
+    public:
+        int findCircleNum(vector<vector<int> > &M)
+        {
+            int m = M.size();
+            int nCircles = 0;
+            vector<bool> checks(m, false);
+            for (int i = 0; i < m; ++i) {
+                if (checks[i] || M[i][i] == 0) continue;
+                stack<int> toNums;
+                toNums.push(i);
+                while (!toNums.empty()) {
+                    int nextI = toNums.top();
+                    toNums.pop();
+                    if (checks[nextI]) continue;
+                    addToStack(M[nextI], toNums);
+                    checks[nextI] = true;
+                }
+                ++nCircles;
+            }
+            return nCircles;
+        }
+    
+        void addToStack(vector<int> &V, stack<int> &S)
+        {   
+            int n = V.size();
+            int i = 0;
+            while (i < n) {
+                if (V[i] == 1) S.push(i);
+                ++i;
+            }
+        }
+};
+
+// The idea is that we push into a stack all the elements which have relationship with other elements.
+// Then, we pop up an element from the stack to check if the element has been ticked off.
+// If not, we push its relevent relationship into the stack and check off the element; otherwise, we skip that element.
+// Once the stack is empty, it means that no more elements can be connected in the same circle.
+// We do these steps for each row to find the total number of friend circles.
