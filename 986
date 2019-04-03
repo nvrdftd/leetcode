@@ -1,0 +1,73 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+    public:
+        vector<Interval> intervalIntersection(vector<Interval>& A, vector<Interval>& B) {
+            vector<Interval> intersections;
+            int nA = A.size();
+            int nB = B.size();
+            if (nA == 0 || nB == 0) return intersections;
+            int i = 0;
+            int j = 0;
+            int ai = 0;
+            int aj = 0;
+            int bi = 0;
+            int bj = 0;
+            while (i < nA && j < nB) {
+                ai = A[i].start;
+                aj = A[i].end;
+                bi = B[j].start;
+                bj = B[j].end;
+                
+                if (j == 3) {
+                    cout << ai << " " << aj << endl;
+                    cout << bi << " " << bj << endl;
+                }
+                if (bj < ai) {
+                    ++j;
+                    continue;
+                }
+                
+                if (bi <= ai && bj >= ai && bj <= aj) {
+                    intersections.push_back(Interval {ai, bj});
+                    A[i].start = min(aj, bj + 1);
+                    ++j;
+                    continue;
+                }
+                
+                if (ai <= bi && aj >= bj) {
+                    intersections.push_back(Interval {bi, bj});
+                    A[i].start = min(aj, bj + 1);
+                    ++j;
+                    continue;
+                }
+                
+                if (bi <= ai && aj <= bj) {
+                    intersections.push_back(Interval {ai, aj});
+                    B[j].start = min(bj, aj + 1);
+                    ++i;
+                    continue;
+                }
+                
+                if (bi <= aj && bj >= aj && ai <= bi) {
+                    intersections.push_back(Interval {bi, aj});
+                    B[j].start = min(bj, aj + 1);
+                    ++i;
+                    continue;
+                }
+                
+                if (aj < bi) {
+                    i++;
+                    continue;
+                }
+            }
+            return intersections;
+        }
+};
