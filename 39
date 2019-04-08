@@ -1,0 +1,32 @@
+class Solution {
+    public:
+        vector<vector<int> > combinationSum(vector<int> &candidates, int target) 
+        {
+            vector<vector<int> > combos;
+            if (candidates.size() > 0) {
+                vector<int> pending;
+                sort(candidates.begin(), candidates.end());
+                select(candidates, combos, pending, 0, target);
+            }
+            return combos;
+        }
+        void select(vector<int> &candidates, vector<vector<int> > &combos, vector<int> &pending, int idx, int target)
+        {   
+            int n = candidates.size();
+            while (idx < n) {
+                if (target - candidates[idx] < 0) break;
+                if (target - candidates[idx] == 0) {
+                    pending.push_back(candidates[idx]);
+                    combos.push_back(pending);
+                    pending.pop_back();
+                    break;
+                }
+                if (target - candidates[idx] > 0) {
+                    pending.push_back(candidates[idx]);
+                    select(candidates, combos, pending, idx, target - candidates[idx]);
+                    pending.pop_back();
+                    ++idx;
+                }
+            }
+        }
+};
