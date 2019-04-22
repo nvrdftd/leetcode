@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int clumsy(int N) {
+        int result = 0;
+        int muldiv = N;
+        int option = 0;
+        while (--N > 0) {
+            switch (option) {
+                case 0:
+                    muldiv *= N;
+                    break;
+                case 1:
+                    muldiv /= N;
+                    break;
+                case 2:
+                    result += (N + muldiv);
+                    muldiv = 0;
+                    break;
+                case 3:
+                    muldiv = -N;
+                    break;
+                
+            }
+            option = (option + 1) % 4;
+        }
+        if (muldiv != 0) result += muldiv;
+        return result;
+    }
+};
