@@ -1,0 +1,57 @@
+class Solution {
+    struct CostComp {
+        bool operator() (vector<int> &aVec, vector<int> &bVec) {
+            return abs(aVec[0] - aVec[1]) > abs(bVec[0] - bVec[1]);
+        }
+    } costComp;
+    public:
+        int twoCitySchedCost(vector<vector<int> > &costs) {
+            sort(costs.begin(), costs.end(), costComp);
+            int minCost = 0;
+            int n = costs.size();
+            int remainingA = n / 2;
+            int remainingB = n / 2;
+            int whichCity = 0;
+            for (int i = 0; i < n; ++i) {
+                
+                if (costs[i][0] < costs[i][1]) {
+                    whichCity = 0; // Prefer city A
+                } else if (costs[i][0] > costs[i][1]) {
+                    whichCity = 1; // Prefer city B
+                } else {
+                    whichCity = 2; // Prefer either city A or city B
+                }
+                    
+                if (whichCity == 0) {
+                    if (remainingA > 0) {
+                        minCost += costs[i][0];
+                        --remainingA;
+                    } else if (remainingB > 0) {
+                        minCost += costs[i][1];
+                        --remainingB;
+                    }
+                } else if (whichCity == 1) {
+                    if (remainingB > 0) {
+                        minCost += costs[i][1];
+                        --remainingB;
+                    } else if (remainingA > 0) {
+                        minCost += costs[i][0];
+                        --remainingA;
+                    }
+                } else {
+                    if (remainingA > remainingB) {
+                        minCost += costs[i][0];
+                        --remainingA;
+                    } else if (remainingA < remainingB) {
+                        minCost += costs[i][1];
+                        --remainingB;
+                    }
+                }
+                
+            }
+            return minCost;
+        }
+};
+
+
+// This won't work.
