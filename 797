@@ -1,0 +1,23 @@
+class Solution {
+    public:
+        vector<vector<int> > allPathsSourceTarget(vector<vector<int> > &graph)
+        {
+            vector<vector<int> > paths;
+            vector<int> path;
+            dfs(graph, paths, path, 0);
+            return std::move(paths);
+        }
+        
+        void dfs(vector<vector<int> > &graph, vector<vector<int> > &paths, vector<int> &path, int i)
+        {   
+            path.push_back(i);
+            
+            // Whenever we reach the target, we insert the traversed path.
+            if (graph[i].size() == 0) paths.push_back(path);
+            
+            for (int j: graph[i]) {
+                dfs(graph, paths, path, j);
+            }
+            path.pop_back();
+        }
+};
