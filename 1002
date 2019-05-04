@@ -1,0 +1,38 @@
+class Solution {
+    public:
+        vector<string> commonChars(vector<string> &A) {
+            vector<int> charCt(26, 100);
+            
+            for (string &str: A) {
+                
+                // Count the number of each lowercase letter in alphabet
+                vector<int> tmp(26);
+                for (int i = 0; i < str.size(); ++i) {
+                    ++tmp[str[i] - 'a'];
+                }
+                
+                // Compare the count with the previous one for each character
+                for (int i = 0; i < 26; ++i) {
+                    if (charCt[i] > tmp[i]) {
+                        charCt[i] = tmp[i];
+                    }
+                }
+                
+            }
+            
+            vector<string> result;
+            
+            // Print out the number of each count
+            for (int i = 0; i < 26; ++i) {
+                if (charCt[i] > 0) {
+                    for (int k = 0; k < charCt[i]; ++k) {
+                        int val = 'a' + i;
+                        string str {(char) val};
+                        result.push_back(std::move(str));
+                    }
+                }
+            }
+            
+            return std::move(result);
+        }
+};
