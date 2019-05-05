@@ -1,0 +1,26 @@
+class Solution {
+    public:
+        vector<vector<int>> permute(vector<int> &nums) {
+            // Take advantage of the fact that the integers are distinct in the given collection
+            vector<vector<int> > permus;
+            vector<int> permu;
+            unordered_set<int> idx;
+            formPermu(nums, permus, permu, idx);
+            return std::move(permus);
+        }
+        void formPermu(vector<int> &nums, vector<vector<int> > &permus, vector<int> &permu, unordered_set<int> &idx) {
+            if (nums.size() == permu.size()) {
+                permus.push_back(permu);
+                return;
+            }
+            
+            for (int i = 0; i < nums.size(); ++i) {
+                if (idx.count(i) > 0) continue;
+                permu.push_back(nums[i]);
+                idx.insert(i);
+                formPermu(nums, permus, permu, idx);
+                idx.erase(idx.find(i));
+                permu.pop_back();
+            }
+        }
+};
